@@ -360,6 +360,243 @@
       color: var(--muted);
       font-size: .8rem;
     }
+
+    /* ── Hero Background Image ── */
+    .hero { position: relative; overflow: hidden; }
+    .hero > *:not(.hero-bg-img) { position: relative; z-index: 1; }
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-bg-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.13;
+      display: block;
+    }
+    .hero-bg-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(13,15,20,0.2) 0%, rgba(13,15,20,0.88) 80%);
+    }
+
+    /* ── Mock Dashboard ── */
+    .dashboard-section {
+      max-width: 900px;
+      margin: 4rem auto 0;
+      padding: 0 1.5rem;
+    }
+    .dashboard-section > h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+      letter-spacing: -.02em;
+    }
+    .ds-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 2rem;
+    }
+    .mock-dashboard {
+      background: #070a0f;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04);
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      grid-template-rows: 44px 1fr;
+      min-height: 340px;
+      font-size: .8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .dash-topbar {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      background: #050810;
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .topbar-logo {
+      font-size: .82rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+    .topbar-tabs { display: flex; gap: .25rem; }
+    .topbar-tab {
+      font-size: .7rem;
+      color: var(--muted);
+      padding: .2rem .6rem;
+      border-radius: 4px;
+      cursor: default;
+    }
+    .topbar-tab.active {
+      background: rgba(79,142,247,.15);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .topbar-date { font-size: .7rem; color: var(--muted); white-space: nowrap; }
+    .md-sidebar {
+      grid-row: 2;
+      background: #0a0d14;
+      border-right: 1px solid var(--border);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      overflow: hidden;
+    }
+    .md-sidebar-title {
+      font-size: .62rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .md-shoot {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left-width: 2px;
+      border-radius: 7px;
+      padding: .6rem .75rem;
+    }
+    .md-shoot.urgent { border-left-color: var(--accent); }
+    .md-shoot.pending { border-left-color: var(--accent2); }
+    .md-shoot.done    { border-left-color: var(--green); opacity: .55; }
+    .shoot-time {
+      font-size: .62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: .2rem;
+    }
+    .md-shoot.urgent .shoot-time { color: var(--accent); }
+    .md-shoot.pending .shoot-time { color: var(--accent2); }
+    .md-shoot.done    .shoot-time { color: var(--green); }
+    .shoot-client { font-weight: 700; color: var(--text); font-size: .78rem; margin-bottom: .1rem; }
+    .shoot-addr { font-size: .67rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .md-main {
+      grid-row: 2;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+    .md-main-header { display: flex; justify-content: space-between; align-items: center; }
+    .md-month { font-weight: 700; color: var(--text); font-size: .88rem; }
+    .md-view-toggle {
+      font-size: .65rem; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 4px; padding: .2rem .6rem;
+    }
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      margin-bottom: 3px;
+    }
+    .cal-weekdays span {
+      text-align: center;
+      font-size: .6rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-day {
+      aspect-ratio: 1;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      color: var(--muted);
+      background: rgba(255,255,255,.02);
+      flex-direction: column;
+      gap: 2px;
+    }
+    .cal-day.has-booking  { background: rgba(79,142,247,.18); color: var(--accent); font-weight: 700; }
+    .cal-day.has-booking2 { background: rgba(124,92,252,.18); color: var(--accent2); font-weight: 700; }
+    .cal-day.today { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 800; }
+    .cal-day.empty { background: transparent; }
+    .cal-dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .7; }
+    .md-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-top: auto; }
+    .md-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: .6rem .75rem;
+      text-align: center;
+    }
+    .ms-val {
+      font-size: 1.1rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ms-label { font-size: .6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: .15rem; }
+
+    /* ── Image Break ── */
+    .img-break { position: relative; width: 100%; max-height: 300px; overflow: hidden; margin: 3rem 0; }
+    .img-break img { width: 100%; height: 300px; object-fit: cover; display: block; }
+    .img-break::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 80px;
+      background: linear-gradient(to bottom, var(--bg), transparent); z-index: 1;
+    }
+    .img-break::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+      background: linear-gradient(to top, var(--bg), transparent); z-index: 1;
+    }
+    .img-break-overlay { position: absolute; inset: 0; background: rgba(13,15,20,.45); z-index: 0; }
+
+    /* ── Gallery Strip ── */
+    .gallery-strip { max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; }
+    .gallery-strip-label {
+      font-size: .75rem; font-weight: 600; color: var(--muted);
+      text-align: center; margin-bottom: 1.25rem;
+      text-transform: uppercase; letter-spacing: .1em;
+    }
+    .gallery-scroll {
+      display: flex; gap: 1rem; overflow-x: auto;
+      padding-bottom: .5rem;
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .gallery-scroll::-webkit-scrollbar { height: 4px; }
+    .gallery-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .gallery-thumb {
+      flex-shrink: 0; width: 220px; height: 155px;
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
+      border: 1px solid var(--border);
+    }
+    .gallery-thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .35s ease;
+    }
+    .gallery-thumb:hover img { transform: scale(1.05); }
+
+    /* ── Testimonial Photo ── */
+    .avatar-photo {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -372,6 +609,11 @@
 
 <!-- Hero -->
 <section class="hero">
+  <!-- Hero background image -->
+  <div class="hero-bg-img" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80&auto=format"
+         alt="" loading="lazy" />
+  </div>
   <div class="hero-pill"><i data-lucide="zap" style="width:14px;height:14px;"></i> Now accepting early access</div>
   <h1>The Modern CRM Built for<br/><span>Real Estate Photographers</span></h1>
   <p class="subheadline">Scheduling. Delivery. Client management.<br/>Without the Zillow baggage.</p>
@@ -450,6 +692,116 @@
   </div>
 </section>
 
+<!-- Mock Dashboard Preview -->
+<section class="dashboard-section">
+  <h2>See your entire business at a glance</h2>
+  <p class="ds-sub">A scheduling dashboard designed the way real estate photographers actually work.</p>
+  <div class="mock-dashboard">
+    <!-- Top bar (spans full width) -->
+    <div class="dash-topbar">
+      <span class="topbar-logo">PhotoPro CRM</span>
+      <div class="topbar-tabs">
+        <span class="topbar-tab active">Dashboard</span>
+        <span class="topbar-tab">Schedule</span>
+        <span class="topbar-tab">Clients</span>
+        <span class="topbar-tab">Galleries</span>
+      </div>
+      <span class="topbar-date">March 2026</span>
+    </div>
+    <!-- Sidebar: upcoming shoots -->
+    <div class="md-sidebar">
+      <div class="md-sidebar-title">Upcoming Shoots</div>
+      <div class="md-shoot urgent">
+        <div class="shoot-time">Today · 9:00 AM</div>
+        <div class="shoot-client">Jennifer Walsh</div>
+        <div class="shoot-addr">142 Birchwood Ln, Dallas TX</div>
+      </div>
+      <div class="md-shoot pending">
+        <div class="shoot-time">Tomorrow · 11:30 AM</div>
+        <div class="shoot-client">Marcus Rivera</div>
+        <div class="shoot-addr">88 Sunset Blvd, Frisco TX</div>
+      </div>
+      <div class="md-shoot pending">
+        <div class="shoot-time">Mar 14 · 2:00 PM</div>
+        <div class="shoot-client">Karen Abbott</div>
+        <div class="shoot-addr">310 Oak St, Plano TX</div>
+      </div>
+      <div class="md-shoot done">
+        <div class="shoot-time">Mar 10 · 10:00 AM</div>
+        <div class="shoot-client">David Chen</div>
+        <div class="shoot-addr">55 Maple Ave, Allen TX</div>
+      </div>
+    </div>
+    <!-- Main: calendar + stats -->
+    <div class="md-main">
+      <div class="md-main-header">
+        <span class="md-month">March 2026</span>
+        <span class="md-view-toggle">Month ▾</span>
+      </div>
+      <div class="md-calendar">
+        <div class="cal-weekdays">
+          <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+        </div>
+        <div class="cal-grid">
+          <!-- Week 1: Mar 1–7 -->
+          <div class="cal-day today">1<div class="cal-dot"></div></div>
+          <div class="cal-day">2</div>
+          <div class="cal-day">3</div>
+          <div class="cal-day has-booking">4<div class="cal-dot"></div></div>
+          <div class="cal-day has-booking2">5<div class="cal-dot"></div></div>
+          <div class="cal-day">6</div>
+          <div class="cal-day">7</div>
+          <!-- Week 2: 8–14 -->
+          <div class="cal-day">8</div>
+          <div class="cal-day has-booking">9<div class="cal-dot"></div></div>
+          <div class="cal-day has-booking">10<div class="cal-dot"></div></div>
+          <div class="cal-day">11</div>
+          <div class="cal-day has-booking2">12<div class="cal-dot"></div></div>
+          <div class="cal-day">13</div>
+          <div class="cal-day has-booking">14<div class="cal-dot"></div></div>
+          <!-- Week 3: 15–21 -->
+          <div class="cal-day">15</div>
+          <div class="cal-day has-booking">16<div class="cal-dot"></div></div>
+          <div class="cal-day">17</div>
+          <div class="cal-day has-booking2">18<div class="cal-dot"></div></div>
+          <div class="cal-day has-booking">19<div class="cal-dot"></div></div>
+          <div class="cal-day">20</div>
+          <div class="cal-day">21</div>
+          <!-- Week 4: 22–28 -->
+          <div class="cal-day has-booking">22<div class="cal-dot"></div></div>
+          <div class="cal-day">23</div>
+          <div class="cal-day has-booking2">24<div class="cal-dot"></div></div>
+          <div class="cal-day">25</div>
+          <div class="cal-day has-booking">26<div class="cal-dot"></div></div>
+          <div class="cal-day">27</div>
+          <div class="cal-day">28</div>
+          <!-- Week 5: 29–31 -->
+          <div class="cal-day">29</div>
+          <div class="cal-day has-booking">30<div class="cal-dot"></div></div>
+          <div class="cal-day">31</div>
+          <div class="cal-day empty"></div>
+          <div class="cal-day empty"></div>
+          <div class="cal-day empty"></div>
+          <div class="cal-day empty"></div>
+        </div>
+      </div>
+      <div class="md-stats-row">
+        <div class="md-stat"><div class="ms-val">24</div><div class="ms-label">Shoots This Month</div></div>
+        <div class="md-stat"><div class="ms-val">$8,640</div><div class="ms-label">Revenue</div></div>
+        <div class="md-stat"><div class="ms-val">11</div><div class="ms-label">Active Clients</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Image Break: photographer shooting a property -->
+<div class="img-break">
+  <div class="img-break-overlay"></div>
+  <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80&auto=format"
+       alt="Modern home interior showcasing the quality real estate photographers deliver"
+       loading="lazy" />
+</div>
+
 <!-- Stats -->
 <div class="stats">
   <div class="stats-inner">
@@ -479,7 +831,9 @@
     <div class="testimonial">
       <p>I've been using Aryeo for two years. The second I heard Zillow bought them, I started looking for alternatives. Can't wait for this.</p>
       <div class="author">
-        <div class="avatar-placeholder"></div>
+        <img class="avatar-photo"
+             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80&auto=format&fit=crop"
+             alt="Sarah M." loading="lazy" />
         <div class="author-info">
           <strong>Sarah M.</strong>
           <span>RE Photographer · Dallas, TX</span>
@@ -489,7 +843,9 @@
     <div class="testimonial">
       <p>HDPH feels like it was designed in 2014. The UI is painful. If PhotoPro actually solves scheduling + delivery in one place, I'm in.</p>
       <div class="author">
-        <div class="avatar-placeholder"></div>
+        <img class="avatar-photo"
+             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80&auto=format&fit=crop"
+             alt="James K." loading="lazy" />
         <div class="author-info">
           <strong>James K.</strong>
           <span>RE Photographer · Atlanta, GA</span>
@@ -499,7 +855,9 @@
     <div class="testimonial">
       <p>The invoicing alone would save me 3 hours a week. I've been doing it manually in Google Sheets like an animal.</p>
       <div class="author">
-        <div class="avatar-placeholder"></div>
+        <img class="avatar-photo"
+             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80&auto=format&fit=crop"
+             alt="Maria L." loading="lazy" />
         <div class="author-info">
           <strong>Maria L.</strong>
           <span>RE Photographer · Miami, FL</span>
@@ -508,6 +866,29 @@
     </div>
   </div>
 </section>
+
+<!-- Gallery Strip: property photos your clients deliver -->
+<div class="gallery-strip">
+  <p class="gallery-strip-label">The kind of work your clients deliver</p>
+  <div class="gallery-scroll">
+    <div class="gallery-thumb">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&q=80&auto=format"
+           alt="Luxury residential property photo" loading="lazy" />
+    </div>
+    <div class="gallery-thumb">
+      <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=300&q=80&auto=format"
+           alt="Modern home exterior photography" loading="lazy" />
+    </div>
+    <div class="gallery-thumb">
+      <img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=300&q=80&auto=format"
+           alt="Beautiful real estate interior shot" loading="lazy" />
+    </div>
+    <div class="gallery-thumb">
+      <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=300&q=80&auto=format"
+           alt="Professional real estate photography" loading="lazy" />
+    </div>
+  </div>
+</div>
 
 <!-- Final CTA -->
 <section class="cta-section">
