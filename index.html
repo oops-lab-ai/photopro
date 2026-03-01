@@ -1,126 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PhotoPro CRM – The Modern CRM Built for Real Estate Photographers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-    /* ── Reset & Variables ── */
+    /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0d0f14;
-      --surface:   #161a22;
-      --border:    #252b37;
-      --accent:    #4f8ef7;
-      --accent2:   #7c5cfc;
-      --text:      #e8ecf4;
-      --muted:     #8891a6;
-      --danger:    #f75a5a;
-      --green:     #3ecf8e;
-      --radius:    12px;
-      --shadow:    0 4px 32px rgba(0,0,0,.45);
+      --bg: #FAF7F2;
+      --bg-alt: #FFFFFF;
+      --surface: #FFFFFF;
+      --text: #1C1917;
+      --text-secondary: #78716C;
+      --text-tertiary: #A8A29E;
+      --accent: #C2742F;
+      --accent-hover: #A8601F;
+      --accent-light: rgba(194,116,47,0.08);
+      --accent-glow: rgba(194,116,47,0.15);
+      --green: #5A7A62;
+      --green-light: rgba(90,122,98,0.08);
+      --danger: #B84233;
+      --danger-light: rgba(184,66,51,0.06);
+      --border: #E7E0D6;
+      --border-light: #F0EBE3;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(28,25,23,0.05);
+      --shadow-md: 0 4px 20px rgba(28,25,23,0.08);
+      --shadow-lg: 0 12px 48px rgba(28,25,23,0.1);
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.6;
-      min-height: 100vh;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
+
+    /* ── Film Grain Overlay ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+    }
+
+    /* ── Container ── */
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Scroll Animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+    .stagger > .reveal:nth-child(2) { transition-delay: 0.08s; }
+    .stagger > .reveal:nth-child(3) { transition-delay: 0.16s; }
+    .stagger > .reveal:nth-child(4) { transition-delay: 0.24s; }
+    .stagger > .reveal:nth-child(5) { transition-delay: 0.32s; }
+    .stagger > .reveal:nth-child(6) { transition-delay: 0.4s; }
 
     /* ── Nav ── */
     nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,247,242,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 1rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.1rem 2rem;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: rgba(13,15,20,.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
     }
     .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -.5px;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: -0.02em;
     }
-    .nav-badge {
-      font-size: .75rem;
-      background: rgba(79,142,247,.15);
+    .logo em {
+      font-style: italic;
       color: var(--accent);
-      border: 1px solid rgba(79,142,247,.3);
-      padding: .25rem .7rem;
+    }
+    .nav-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green);
+      background: var(--green-light);
+      border: 1px solid rgba(90,122,98,0.2);
+      padding: 0.3rem 0.9rem;
       border-radius: 99px;
     }
 
     /* ── Hero ── */
     .hero {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 6rem 1.5rem 4rem;
+      position: relative;
+      padding: 8rem 2rem 6rem;
       text-align: center;
+      overflow: hidden;
     }
-    .hero-pill {
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -8%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(194,116,47,0.1) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -25%;
+      left: -12%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(90,122,98,0.06) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: .4rem;
-      background: rgba(62,207,142,.1);
-      color: var(--green);
-      border: 1px solid rgba(62,207,142,.25);
-      padding: .3rem 1rem;
+      gap: 0.5rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid var(--accent-glow);
+      padding: 0.35rem 1.1rem;
       border-radius: 99px;
-      font-size: .8rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: .04em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--text);
       margin-bottom: 1.5rem;
     }
-    h1 {
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -.03em;
-      margin-bottom: 1.2rem;
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+      display: block;
     }
-    h1 span {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .subheadline {
+    .hero-sub {
       font-size: 1.2rem;
-      color: var(--muted);
-      max-width: 560px;
-      margin: 0 auto 2.5rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
     }
 
-    /* ── Email Form ── */
-    .form-wrap {
+    /* ── Form Styles ── */
+    .form-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem 2rem 2rem;
-      max-width: 500px;
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.5rem;
+      max-width: 520px;
       margin: 0 auto;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
     }
-    .form-wrap h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 1.2rem;
+    .form-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 1.25rem;
       color: var(--text);
     }
     .form-row {
       display: flex;
-      gap: .75rem;
+      gap: 0.75rem;
     }
     @media (max-width: 520px) {
       .form-row { flex-direction: column; }
@@ -128,790 +213,989 @@
     input[type="email"] {
       flex: 1;
       background: var(--bg);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       color: var(--text);
-      padding: .8rem 1rem;
-      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      border-radius: 10px;
       font-size: 1rem;
+      font-family: var(--font-body);
       outline: none;
-      transition: border-color .2s;
+      transition: border-color 0.25s, box-shadow 0.25s;
     }
-    input[type="email"]:focus { border-color: var(--accent); }
-    input[type="email"]::placeholder { color: var(--muted); }
+    input[type="email"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+    input[type="email"]::placeholder { color: var(--text-tertiary); }
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background: var(--accent);
       color: #fff;
       border: none;
-      padding: .8rem 1.4rem;
-      border-radius: 8px;
-      font-size: .95rem;
-      font-weight: 700;
+      padding: 0.85rem 1.6rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: var(--font-body);
       cursor: pointer;
       white-space: nowrap;
-      transition: opacity .2s, transform .15s;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
     }
-    .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(194,116,47,0.25);
+    }
+    .btn-primary:active { transform: translateY(0); }
     .form-note {
-      font-size: .75rem;
-      color: var(--muted);
-      margin-top: .75rem;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      margin-top: 0.85rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: .3rem;
+      gap: 0.35rem;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 0;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      width: 80px;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider span {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      transform: rotate(45deg);
+      margin: 0 1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Section Headings ── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.65;
     }
 
     /* ── Pain Points ── */
-    .pain {
-      max-width: 900px;
-      margin: 5rem auto;
-      padding: 0 1.5rem;
+    .problems {
+      background: var(--bg-alt);
+      padding: 6rem 0;
     }
-    .pain h2 {
+    .problems-header {
       text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 2.5rem;
-      letter-spacing: -.02em;
+      margin-bottom: 3.5rem;
     }
-    .pain-grid {
+    .problems-header .section-sub { margin: 0 auto; }
+    .problem-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
     }
-    .pain-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
+    @media (max-width: 768px) {
+      .problem-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
     }
-    .pain-card .icon {
-      margin-bottom: .75rem;
+    .problem-card {
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .pain-card h4 {
-      font-size: 1rem;
+    .problem-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .problem-num {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-style: italic;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .problem-card h4 {
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: .4rem;
       color: var(--danger);
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
     }
-    .pain-card p {
-      font-size: .9rem;
-      color: var(--muted);
-      line-height: 1.55;
+    .problem-card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
     }
 
     /* ── Features ── */
     .features {
-      max-width: 900px;
-      margin: 4rem auto;
-      padding: 0 1.5rem;
+      padding: 6rem 0;
     }
-    .features h2 {
+    .features-header {
       text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 2.5rem;
-      letter-spacing: -.02em;
+      margin-bottom: 3.5rem;
     }
-    .feat-grid {
+    .features-header .section-sub { margin: 0 auto; }
+    .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.25rem;
     }
-    .feat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .feat-card .feat-icon {
-      margin-bottom: .75rem;
-      display: flex;
-      justify-content: center;
-    }
-    .feat-card h4 {
-      font-weight: 700;
-      margin-bottom: .4rem;
-    }
-    .feat-card p {
-      font-size: .85rem;
-      color: var(--muted);
-    }
-
-    /* ── Social Proof ── */
-    .social-proof {
-      max-width: 900px;
-      margin: 4rem auto;
-      padding: 0 1.5rem;
-    }
-    .social-proof h2 {
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 2.5rem;
-      letter-spacing: -.02em;
-    }
-    .testimonials {
+    .feature-grid .feature-card:first-child {
+      grid-column: 1 / -1;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 2.5rem;
     }
-    .testimonial {
+    .feature-grid .feature-card:first-child .feat-icon-wrap {
+      width: 72px;
+      height: 72px;
+    }
+    .feature-grid .feature-card:first-child .feat-icon-wrap i {
+      width: 32px !important;
+      height: 32px !important;
+    }
+    .feature-grid .feature-card:first-child h4 { font-size: 1.15rem; }
+    .feature-grid .feature-card:first-child p { font-size: 0.95rem; }
+    @media (max-width: 768px) {
+      .feature-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+      .feature-grid .feature-card:first-child { grid-template-columns: 1fr; text-align: center; }
+      .feature-grid .feature-card:first-child .feat-icon-wrap { margin: 0 auto; }
+    }
+    .feature-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      position: relative;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .testimonial::before {
-      content: '"';
-      font-size: 4rem;
-      line-height: 1;
-      color: var(--accent);
-      opacity: .3;
-      position: absolute;
-      top: .5rem;
-      left: 1rem;
-      font-family: Georgia, serif;
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
     }
-    .testimonial p {
-      font-size: .9rem;
-      color: var(--muted);
-      margin-bottom: 1rem;
-      padding-top: 1.5rem;
-      font-style: italic;
-    }
-    .testimonial .author {
+    .feat-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--accent-light);
       display: flex;
       align-items: center;
-      gap: .75rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      color: var(--accent);
     }
-    .avatar-placeholder {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      opacity: .5;
-    }
-    .testimonial .author-info strong {
-      display: block;
-      font-size: .85rem;
+    .feature-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
       color: var(--text);
     }
-    .testimonial .author-info span {
-      font-size: .75rem;
-      color: var(--muted);
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
     }
 
-    /* ── Stats ── */
-    .stats {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 3rem 1.5rem;
-      margin: 4rem 0;
-    }
-    .stats-inner {
-      max-width: 800px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 2rem;
-      text-align: center;
-    }
-    .stat-item .num {
-      font-size: 2.5rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .stat-item p {
-      color: var(--muted);
-      font-size: .9rem;
-      margin-top: .25rem;
-    }
-
-    /* ── Final CTA ── */
-    .cta-section {
-      max-width: 600px;
-      margin: 0 auto 6rem;
-      padding: 0 1.5rem;
-      text-align: center;
-    }
-    .cta-section h2 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-      letter-spacing: -.02em;
-    }
-    .cta-section p {
-      color: var(--muted);
-      margin-bottom: 2rem;
-    }
-
-    /* ── Footer ── */
-    footer {
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 1.5rem;
-      color: var(--muted);
-      font-size: .8rem;
-    }
-
-    /* ── Hero Background Image ── */
-    .hero { position: relative; overflow: hidden; }
-    .hero > *:not(.hero-bg-img) { position: relative; z-index: 1; }
-    .hero-bg-img {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .hero-bg-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.13;
-      display: block;
-    }
-    .hero-bg-img::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, rgba(13,15,20,0.2) 0%, rgba(13,15,20,0.88) 80%);
-    }
-
-    /* ── Mock Dashboard ── */
+    /* ── Dashboard Preview ── */
     .dashboard-section {
-      max-width: 900px;
-      margin: 4rem auto 0;
-      padding: 0 1.5rem;
+      background: var(--bg-alt);
+      padding: 6rem 0 5rem;
     }
-    .dashboard-section > h2 {
+    .dashboard-header {
       text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: .5rem;
-      letter-spacing: -.02em;
+      margin-bottom: 3rem;
     }
-    .ds-sub {
-      text-align: center;
-      color: var(--muted);
-      font-size: .95rem;
-      margin-bottom: 2rem;
-    }
-    .mock-dashboard {
-      background: #070a0f;
+    .dashboard-header .section-sub { margin: 0 auto; }
+    .mock-dash {
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 12px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04);
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.03);
       display: grid;
-      grid-template-columns: 210px 1fr;
-      grid-template-rows: 44px 1fr;
-      min-height: 340px;
-      font-size: .8rem;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      grid-template-columns: 220px 1fr;
+      grid-template-rows: 48px 1fr;
+      min-height: 360px;
+      font-size: 0.8rem;
+    }
+    @media (max-width: 768px) {
+      .mock-dash { grid-template-columns: 1fr; grid-template-rows: 48px auto auto; min-height: auto; }
+      .dash-sidebar { display: none; }
     }
     .dash-topbar {
       grid-column: 1 / -1;
-      grid-row: 1;
-      background: #050810;
-      border-bottom: 1px solid var(--border);
+      background: #FDFCFA;
+      border-bottom: 1px solid var(--border-light);
       padding: 0 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
     }
-    .topbar-logo {
-      font-size: .82rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      white-space: nowrap;
+    .topbar-brand {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: var(--text);
     }
-    .topbar-tabs { display: flex; gap: .25rem; }
+    .topbar-brand em { font-style: italic; color: var(--accent); }
+    .topbar-tabs { display: flex; gap: 0.2rem; }
     .topbar-tab {
-      font-size: .7rem;
-      color: var(--muted);
-      padding: .2rem .6rem;
-      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      padding: 0.25rem 0.7rem;
+      border-radius: 6px;
       cursor: default;
     }
     .topbar-tab.active {
-      background: rgba(79,142,247,.15);
+      background: var(--accent-light);
       color: var(--accent);
       font-weight: 600;
     }
-    .topbar-date { font-size: .7rem; color: var(--muted); white-space: nowrap; }
-    .md-sidebar {
-      grid-row: 2;
-      background: #0a0d14;
-      border-right: 1px solid var(--border);
+    .topbar-date { font-size: 0.7rem; color: var(--text-tertiary); }
+    .dash-sidebar {
+      background: #FDFCFA;
+      border-right: 1px solid var(--border-light);
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: .6rem;
+      gap: 0.6rem;
       overflow: hidden;
     }
-    .md-sidebar-title {
-      font-size: .62rem;
+    .sidebar-label {
+      font-size: 0.6rem;
       text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--muted);
-      padding-bottom: .5rem;
-      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-light);
     }
-    .md-shoot {
+    .shoot-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-left-width: 2px;
-      border-radius: 7px;
-      padding: .6rem .75rem;
+      border: 1px solid var(--border-light);
+      border-left-width: 3px;
+      border-radius: 8px;
+      padding: 0.6rem 0.75rem;
     }
-    .md-shoot.urgent { border-left-color: var(--accent); }
-    .md-shoot.pending { border-left-color: var(--accent2); }
-    .md-shoot.done    { border-left-color: var(--green); opacity: .55; }
+    .shoot-card.today { border-left-color: var(--accent); }
+    .shoot-card.upcoming { border-left-color: var(--green); }
+    .shoot-card.done { border-left-color: var(--border); opacity: 0.5; }
     .shoot-time {
-      font-size: .62rem;
+      font-size: 0.6rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: .05em;
-      margin-bottom: .2rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.15rem;
     }
-    .md-shoot.urgent .shoot-time { color: var(--accent); }
-    .md-shoot.pending .shoot-time { color: var(--accent2); }
-    .md-shoot.done    .shoot-time { color: var(--green); }
-    .shoot-client { font-weight: 700; color: var(--text); font-size: .78rem; margin-bottom: .1rem; }
-    .shoot-addr { font-size: .67rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .md-main {
-      grid-row: 2;
-      padding: 1rem;
+    .shoot-card.today .shoot-time { color: var(--accent); }
+    .shoot-card.upcoming .shoot-time { color: var(--green); }
+    .shoot-card.done .shoot-time { color: var(--text-tertiary); }
+    .shoot-client { font-weight: 700; font-size: 0.78rem; color: var(--text); }
+    .shoot-addr { font-size: 0.65rem; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dash-main {
+      padding: 1rem 1.25rem;
       display: flex;
       flex-direction: column;
-      gap: .75rem;
+      gap: 0.75rem;
     }
-    .md-main-header { display: flex; justify-content: space-between; align-items: center; }
-    .md-month { font-weight: 700; color: var(--text); font-size: .88rem; }
-    .md-view-toggle {
-      font-size: .65rem; color: var(--muted);
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 4px; padding: .2rem .6rem;
+    .dash-main-header { display: flex; justify-content: space-between; align-items: center; }
+    .dash-month { font-weight: 700; color: var(--text); font-size: 0.9rem; }
+    .dash-view {
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
+      background: #FDFCFA;
+      border: 1px solid var(--border-light);
+      border-radius: 5px;
+      padding: 0.2rem 0.6rem;
+      font-weight: 500;
     }
     .cal-weekdays {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 3px;
-      margin-bottom: 3px;
     }
     .cal-weekdays span {
       text-align: center;
-      font-size: .6rem;
-      color: var(--muted);
+      font-size: 0.58rem;
+      color: var(--text-tertiary);
       text-transform: uppercase;
-      letter-spacing: .05em;
+      letter-spacing: 0.06em;
+      font-weight: 600;
     }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
     .cal-day {
       aspect-ratio: 1;
-      border-radius: 5px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: .7rem;
-      color: var(--muted);
-      background: rgba(255,255,255,.02);
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      background: rgba(0,0,0,0.015);
       flex-direction: column;
       gap: 2px;
+      font-weight: 500;
     }
-    .cal-day.has-booking  { background: rgba(79,142,247,.18); color: var(--accent); font-weight: 700; }
-    .cal-day.has-booking2 { background: rgba(124,92,252,.18); color: var(--accent2); font-weight: 700; }
-    .cal-day.today { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 800; }
+    .cal-day.booked { background: var(--accent-light); color: var(--accent); font-weight: 700; }
+    .cal-day.booked-alt { background: var(--green-light); color: var(--green); font-weight: 700; }
+    .cal-day.today { background: var(--accent); color: #fff; font-weight: 800; border-radius: 50%; }
     .cal-day.empty { background: transparent; }
-    .cal-dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .7; }
-    .md-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-top: auto; }
-    .md-stat {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: .6rem .75rem;
+    .cal-dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      margin-top: auto;
+    }
+    .dash-stat {
+      background: #FDFCFA;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 0.6rem;
       text-align: center;
     }
-    .ms-val {
-      font-size: 1.1rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .ds-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--accent);
     }
-    .ms-label { font-size: .6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: .15rem; }
+    .ds-label {
+      font-size: 0.58rem;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 0.1rem;
+      font-weight: 600;
+    }
 
-    /* ── Image Break ── */
-    .img-break { position: relative; width: 100%; max-height: 300px; overflow: hidden; margin: 3rem 0; }
-    .img-break img { width: 100%; height: 300px; object-fit: cover; display: block; }
-    .img-break::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 80px;
-      background: linear-gradient(to bottom, var(--bg), transparent); z-index: 1;
+    /* ── Photo Break ── */
+    .photo-break {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      margin: 0;
     }
-    .img-break::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
-      background: linear-gradient(to top, var(--bg), transparent); z-index: 1;
+    .photo-break img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-    .img-break-overlay { position: absolute; inset: 0; background: rgba(13,15,20,.45); z-index: 0; }
+    .photo-break-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, var(--bg-alt) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 75%, var(--bg) 100%);
+      z-index: 1;
+    }
 
-    /* ── Gallery Strip ── */
-    .gallery-strip { max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; }
-    .gallery-strip-label {
-      font-size: .75rem; font-weight: 600; color: var(--muted);
-      text-align: center; margin-bottom: 1.25rem;
-      text-transform: uppercase; letter-spacing: .1em;
+    /* ── Stats Section ── */
+    .stats-section {
+      padding: 5rem 0;
     }
-    .gallery-scroll {
-      display: flex; gap: 1rem; overflow-x: auto;
-      padding-bottom: .5rem;
-      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
     }
-    .gallery-scroll::-webkit-scrollbar { height: 4px; }
-    .gallery-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-    .gallery-thumb {
-      flex-shrink: 0; width: 220px; height: 155px;
-      border-radius: 10px; overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,.5);
-      border: 1px solid var(--border);
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; }
     }
-    .gallery-thumb img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      transition: transform .35s ease;
+    .stat-item .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.35rem;
     }
-    .gallery-thumb:hover img { transform: scale(1.05); }
+    .stat-item .stat-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
 
-    /* ── Testimonial Photo ── */
-    .avatar-photo {
-      width: 40px; height: 40px;
+    /* ── Testimonials ── */
+    .testimonials {
+      background: var(--bg-alt);
+      padding: 6rem 0;
+    }
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .testimonials-header .section-sub { margin: 0 auto; }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .testimonial-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+    }
+    .testimonial-card {
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '\201C';
+      font-family: var(--font-display);
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.15;
+      position: absolute;
+      top: 0.5rem;
+      left: 1.25rem;
+    }
+    .testimonial-card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+      padding-top: 1.5rem;
+      font-style: italic;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .testimonial-avatar {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--border);
+      border: 2px solid var(--border-light);
       flex-shrink: 0;
+    }
+    .testimonial-info strong {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .testimonial-info span {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+
+    /* ── Gallery Strip ── */
+    .gallery {
+      padding: 4rem 0 2rem;
+      overflow: hidden;
+    }
+    .gallery-label {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 1.5rem;
+    }
+    .gallery-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 0 2rem 0.75rem;
+      justify-content: center;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .gallery-scroll::-webkit-scrollbar { height: 3px; }
+    .gallery-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .gallery-thumb {
+      flex-shrink: 0;
+      width: 240px;
+      height: 165px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .gallery-thumb:hover img { transform: scale(1.06); }
+
+    /* ── Final CTA ── */
+    .final-cta {
+      background: #1C1917;
+      color: #FAF7F2;
+      padding: 6rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(194,116,47,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .final-cta > * { position: relative; z-index: 1; }
+    .final-cta .section-title {
+      color: #FAF7F2;
+      margin-bottom: 1rem;
+    }
+    .final-cta .section-sub {
+      color: rgba(250,247,242,0.6);
+      margin: 0 auto 2.5rem;
+    }
+    .final-cta .form-card {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .final-cta .form-card h3 { color: #FAF7F2; }
+    .final-cta input[type="email"] {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+      color: #FAF7F2;
+    }
+    .final-cta input[type="email"]::placeholder { color: rgba(250,247,242,0.35); }
+    .final-cta input[type="email"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(194,116,47,0.2);
+    }
+    .final-cta .form-note { color: rgba(250,247,242,0.35); }
+
+    /* ── Footer ── */
+    footer {
+      background: #1C1917;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+      padding: 1.5rem 2rem;
+      color: rgba(250,247,242,0.35);
+      font-size: 0.8rem;
+    }
+    footer a { color: rgba(250,247,242,0.5); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── Utility ── */
+    @media (max-width: 520px) {
+      .hero { padding: 5rem 1.25rem 4rem; }
+      .form-card { padding: 1.5rem; }
+      nav { padding: 0.9rem 1.25rem; }
+      .container { padding: 0 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Nav -->
+<!-- ── Nav ── -->
 <nav>
-  <div class="logo">PhotoPro CRM</div>
-  <span class="nav-badge">Early Access</span>
+  <div class="logo">Photo<em>Pro</em> CRM</div>
+  <span class="nav-pill">Early Access</span>
 </nav>
 
-<!-- Hero -->
+<!-- ── Hero ── -->
 <section class="hero">
-  <!-- Hero background image -->
-  <div class="hero-bg-img" aria-hidden="true">
-    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80&auto=format"
-         alt="" loading="lazy" />
+  <div class="hero-badge reveal">
+    <i data-lucide="aperture" style="width:14px;height:14px;"></i>
+    Now accepting early access
   </div>
-  <div class="hero-pill"><i data-lucide="zap" style="width:14px;height:14px;"></i> Now accepting early access</div>
-  <h1>The Modern CRM Built for<br/><span>Real Estate Photographers</span></h1>
-  <p class="subheadline">Scheduling. Delivery. Client management.<br/>Without the Zillow baggage.</p>
-
-  <div class="form-wrap">
-    <h3>Join the Early Access Waitlist →</h3>
+  <h1 class="reveal" style="transition-delay:0.06s">The CRM built for<em>Real Estate Photographers</em></h1>
+  <p class="hero-sub reveal" style="transition-delay:0.12s">Scheduling. Delivery. Client management.<br>Without the Zillow baggage.</p>
+  <div class="form-card reveal" style="transition-delay:0.18s">
+    <h3>Join the waitlist →</h3>
     <form action="https://formsubmit.co/oopslabai@gmail.com" method="POST">
       <input type="hidden" name="_subject" value="PhotoPro CRM Waitlist Signup">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://oops-lab-ai.github.io/photopro/thanks.html">
       <div class="form-row">
-        <input type="email" name="email" placeholder="your@email.com" required />
+        <input type="email" name="email" placeholder="your@email.com" required>
         <button type="submit" class="btn-primary">Get Early Access</button>
       </div>
     </form>
-    <p class="form-note"><i data-lucide="lock" style="width:12px;height:12px;"></i> No spam. No Zillow. Just early access and honest updates.</p>
+    <p class="form-note">
+      <i data-lucide="shield-check" style="width:13px;height:13px;"></i>
+      No spam. No Zillow. Just early access &amp; honest updates.
+    </p>
   </div>
 </section>
 
-<!-- Pain Points -->
-<section class="pain">
-  <h2>Sound familiar?</h2>
-  <div class="pain-grid">
-    <div class="pain-card">
-      <div class="icon"><i data-lucide="frown" style="width:28px;height:28px;color:var(--danger);"></i></div>
-      <h4>Frustrated with clunky HDPH?</h4>
-      <p>HDPhotoHub and similar tools were built for a different era. You're spending more time fighting the software than shooting.</p>
+<!-- ── Divider ── -->
+<div class="divider"><span></span></div>
+
+<!-- ── Pain Points ── -->
+<section class="problems">
+  <div class="container">
+    <div class="problems-header">
+      <p class="section-label reveal">The Problem</p>
+      <h2 class="section-title reveal">Sound familiar?</h2>
+      <p class="section-sub reveal">You didn't become a photographer to fight your software.</p>
     </div>
-    <div class="pain-card">
-      <div class="icon"><i data-lucide="lock" style="width:28px;height:28px;color:var(--danger);"></i></div>
-      <h4>Worried about Aryeo &amp; Zillow?</h4>
-      <p>Zillow acquired Aryeo. Your client data, your gallery links, your relationships — now living on a platform with competing interests.</p>
-    </div>
-    <div class="pain-card">
-      <div class="icon"><i data-lucide="dollar-sign" style="width:28px;height:28px;color:var(--danger);"></i></div>
-      <h4>Overpaying for basic features?</h4>
-      <p>Why are you paying enterprise prices for scheduling, email templates, and file delivery? These should be table stakes — not upsells.</p>
+    <div class="problem-grid stagger">
+      <div class="problem-card reveal">
+        <div class="problem-num">01</div>
+        <h4>Frustrated with clunky HDPH?</h4>
+        <p>HDPhotoHub and similar tools were built for a different era. You're spending more time fighting the software than shooting properties.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-num">02</div>
+        <h4>Worried about Aryeo &amp; Zillow?</h4>
+        <p>Zillow acquired Aryeo. Your client data, gallery links, and relationships — now living on a platform with competing interests.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-num">03</div>
+        <h4>Overpaying for basics?</h4>
+        <p>Enterprise prices for scheduling, email templates, and file delivery? These should be table stakes — not premium upsells.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Features -->
+<!-- ── Features ── -->
 <section class="features">
-  <h2>Everything you need. Nothing you don't.</h2>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-icon"><i data-lucide="calendar" style="width:32px;height:32px;color:var(--accent);"></i></div>
-      <h4>Smart Scheduling</h4>
-      <p>Client self-booking with location, shoot type, and access instructions — all in one link.</p>
+  <div class="container">
+    <div class="features-header">
+      <p class="section-label reveal">The Solution</p>
+      <h2 class="section-title reveal">Everything you need.<br>Nothing you don't.</h2>
     </div>
-    <div class="feat-card">
-      <div class="feat-icon"><i data-lucide="upload" style="width:32px;height:32px;color:var(--accent);"></i></div>
-      <h4>Gallery Delivery</h4>
-      <p>Branded delivery portals. Your domain. Your logo. Never Zillow's.</p>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon"><i data-lucide="users" style="width:32px;height:32px;color:var(--accent);"></i></div>
-      <h4>Agent CRM</h4>
-      <p>Track every agent, every shoot, every relationship. Know who your best clients are at a glance.</p>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon"><i data-lucide="credit-card" style="width:32px;height:32px;color:var(--accent);"></i></div>
-      <h4>Invoicing &amp; Payments</h4>
-      <p>Send invoices, collect deposits, automate reminders. Get paid faster.</p>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon"><i data-lucide="bell" style="width:32px;height:32px;color:var(--accent);"></i></div>
-      <h4>Automated Follow-ups</h4>
-      <p>Pre-shoot confirmations, delivery notifications, review requests — on autopilot.</p>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon"><i data-lucide="bar-chart-3" style="width:32px;height:32px;color:var(--accent);"></i></div>
-      <h4>Business Analytics</h4>
-      <p>Revenue by agent, shoot volume trends, your best zip codes. Data that actually matters.</p>
+    <div class="feature-grid stagger">
+      <div class="feature-card reveal">
+        <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+          <div class="feat-icon-wrap" style="width:72px;height:72px;margin-bottom:0;">
+            <i data-lucide="calendar-check" style="width:30px;height:30px;"></i>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <h4 style="font-size:1.15rem;">Smart Scheduling</h4>
+            <p style="font-size:0.95rem;">Client self-booking with location, shoot type, and access instructions — all in one shareable link. No more back-and-forth texts.</p>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feat-icon-wrap"><i data-lucide="image" style="width:22px;height:22px;"></i></div>
+        <h4>Gallery Delivery</h4>
+        <p>Branded delivery portals. Your domain. Your logo. Never Zillow's.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feat-icon-wrap"><i data-lucide="users" style="width:22px;height:22px;"></i></div>
+        <h4>Agent CRM</h4>
+        <p>Track every agent, shoot, and relationship. Know your best clients at a glance.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feat-icon-wrap"><i data-lucide="receipt" style="width:22px;height:22px;"></i></div>
+        <h4>Invoicing &amp; Payments</h4>
+        <p>Send invoices, collect deposits, automate reminders. Get paid faster.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feat-icon-wrap"><i data-lucide="bell-ring" style="width:22px;height:22px;"></i></div>
+        <h4>Automated Follow-ups</h4>
+        <p>Pre-shoot confirmations, delivery notifications, review requests — on autopilot.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feat-icon-wrap"><i data-lucide="trending-up" style="width:22px;height:22px;"></i></div>
+        <h4>Business Analytics</h4>
+        <p>Revenue by agent, volume trends, your best zip codes. Data that matters.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Mock Dashboard Preview -->
+<!-- ── Dashboard Preview ── -->
 <section class="dashboard-section">
-  <h2>See your entire business at a glance</h2>
-  <p class="ds-sub">A scheduling dashboard designed the way real estate photographers actually work.</p>
-  <div class="mock-dashboard">
-    <!-- Top bar (spans full width) -->
-    <div class="dash-topbar">
-      <span class="topbar-logo">PhotoPro CRM</span>
-      <div class="topbar-tabs">
-        <span class="topbar-tab active">Dashboard</span>
-        <span class="topbar-tab">Schedule</span>
-        <span class="topbar-tab">Clients</span>
-        <span class="topbar-tab">Galleries</span>
-      </div>
-      <span class="topbar-date">March 2026</span>
+  <div class="container">
+    <div class="dashboard-header">
+      <p class="section-label reveal">Product Preview</p>
+      <h2 class="section-title reveal">Your entire business,<br><em style="font-family:var(--font-display);font-style:italic;color:var(--accent);">at a glance</em></h2>
+      <p class="section-sub reveal">A scheduling dashboard designed the way real estate photographers actually work.</p>
     </div>
-    <!-- Sidebar: upcoming shoots -->
-    <div class="md-sidebar">
-      <div class="md-sidebar-title">Upcoming Shoots</div>
-      <div class="md-shoot urgent">
-        <div class="shoot-time">Today · 9:00 AM</div>
-        <div class="shoot-client">Jennifer Walsh</div>
-        <div class="shoot-addr">142 Birchwood Ln, Dallas TX</div>
-      </div>
-      <div class="md-shoot pending">
-        <div class="shoot-time">Tomorrow · 11:30 AM</div>
-        <div class="shoot-client">Marcus Rivera</div>
-        <div class="shoot-addr">88 Sunset Blvd, Frisco TX</div>
-      </div>
-      <div class="md-shoot pending">
-        <div class="shoot-time">Mar 14 · 2:00 PM</div>
-        <div class="shoot-client">Karen Abbott</div>
-        <div class="shoot-addr">310 Oak St, Plano TX</div>
-      </div>
-      <div class="md-shoot done">
-        <div class="shoot-time">Mar 10 · 10:00 AM</div>
-        <div class="shoot-client">David Chen</div>
-        <div class="shoot-addr">55 Maple Ave, Allen TX</div>
-      </div>
-    </div>
-    <!-- Main: calendar + stats -->
-    <div class="md-main">
-      <div class="md-main-header">
-        <span class="md-month">March 2026</span>
-        <span class="md-view-toggle">Month ▾</span>
-      </div>
-      <div class="md-calendar">
-        <div class="cal-weekdays">
-          <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+    <div class="mock-dash reveal">
+      <div class="dash-topbar">
+        <span class="topbar-brand">Photo<em>Pro</em></span>
+        <div class="topbar-tabs">
+          <span class="topbar-tab active">Dashboard</span>
+          <span class="topbar-tab">Schedule</span>
+          <span class="topbar-tab">Clients</span>
+          <span class="topbar-tab">Galleries</span>
         </div>
-        <div class="cal-grid">
-          <!-- Week 1: Mar 1–7 -->
-          <div class="cal-day today">1<div class="cal-dot"></div></div>
-          <div class="cal-day">2</div>
-          <div class="cal-day">3</div>
-          <div class="cal-day has-booking">4<div class="cal-dot"></div></div>
-          <div class="cal-day has-booking2">5<div class="cal-dot"></div></div>
-          <div class="cal-day">6</div>
-          <div class="cal-day">7</div>
-          <!-- Week 2: 8–14 -->
-          <div class="cal-day">8</div>
-          <div class="cal-day has-booking">9<div class="cal-dot"></div></div>
-          <div class="cal-day has-booking">10<div class="cal-dot"></div></div>
-          <div class="cal-day">11</div>
-          <div class="cal-day has-booking2">12<div class="cal-dot"></div></div>
-          <div class="cal-day">13</div>
-          <div class="cal-day has-booking">14<div class="cal-dot"></div></div>
-          <!-- Week 3: 15–21 -->
-          <div class="cal-day">15</div>
-          <div class="cal-day has-booking">16<div class="cal-dot"></div></div>
-          <div class="cal-day">17</div>
-          <div class="cal-day has-booking2">18<div class="cal-dot"></div></div>
-          <div class="cal-day has-booking">19<div class="cal-dot"></div></div>
-          <div class="cal-day">20</div>
-          <div class="cal-day">21</div>
-          <!-- Week 4: 22–28 -->
-          <div class="cal-day has-booking">22<div class="cal-dot"></div></div>
-          <div class="cal-day">23</div>
-          <div class="cal-day has-booking2">24<div class="cal-dot"></div></div>
-          <div class="cal-day">25</div>
-          <div class="cal-day has-booking">26<div class="cal-dot"></div></div>
-          <div class="cal-day">27</div>
-          <div class="cal-day">28</div>
-          <!-- Week 5: 29–31 -->
-          <div class="cal-day">29</div>
-          <div class="cal-day has-booking">30<div class="cal-dot"></div></div>
-          <div class="cal-day">31</div>
-          <div class="cal-day empty"></div>
-          <div class="cal-day empty"></div>
-          <div class="cal-day empty"></div>
-          <div class="cal-day empty"></div>
+        <span class="topbar-date">March 2026</span>
+      </div>
+      <div class="dash-sidebar">
+        <div class="sidebar-label">Upcoming Shoots</div>
+        <div class="shoot-card today">
+          <div class="shoot-time">Today · 9:00 AM</div>
+          <div class="shoot-client">Jennifer Walsh</div>
+          <div class="shoot-addr">142 Birchwood Ln, Dallas TX</div>
+        </div>
+        <div class="shoot-card upcoming">
+          <div class="shoot-time">Tomorrow · 11:30 AM</div>
+          <div class="shoot-client">Marcus Rivera</div>
+          <div class="shoot-addr">88 Sunset Blvd, Frisco TX</div>
+        </div>
+        <div class="shoot-card upcoming">
+          <div class="shoot-time">Mar 14 · 2:00 PM</div>
+          <div class="shoot-client">Karen Abbott</div>
+          <div class="shoot-addr">310 Oak St, Plano TX</div>
+        </div>
+        <div class="shoot-card done">
+          <div class="shoot-time">Mar 10 · 10:00 AM</div>
+          <div class="shoot-client">David Chen</div>
+          <div class="shoot-addr">55 Maple Ave, Allen TX</div>
         </div>
       </div>
-      <div class="md-stats-row">
-        <div class="md-stat"><div class="ms-val">24</div><div class="ms-label">Shoots This Month</div></div>
-        <div class="md-stat"><div class="ms-val">$8,640</div><div class="ms-label">Revenue</div></div>
-        <div class="md-stat"><div class="ms-val">11</div><div class="ms-label">Active Clients</div></div>
+      <div class="dash-main">
+        <div class="dash-main-header">
+          <span class="dash-month">March 2026</span>
+          <span class="dash-view">Month ▾</span>
+        </div>
+        <div>
+          <div class="cal-weekdays">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day today">1</div>
+            <div class="cal-day">2</div>
+            <div class="cal-day">3</div>
+            <div class="cal-day booked">4<div class="cal-dot"></div></div>
+            <div class="cal-day booked-alt">5<div class="cal-dot"></div></div>
+            <div class="cal-day">6</div>
+            <div class="cal-day">7</div>
+            <div class="cal-day">8</div>
+            <div class="cal-day booked">9<div class="cal-dot"></div></div>
+            <div class="cal-day booked">10<div class="cal-dot"></div></div>
+            <div class="cal-day">11</div>
+            <div class="cal-day booked-alt">12<div class="cal-dot"></div></div>
+            <div class="cal-day">13</div>
+            <div class="cal-day booked">14<div class="cal-dot"></div></div>
+            <div class="cal-day">15</div>
+            <div class="cal-day booked">16<div class="cal-dot"></div></div>
+            <div class="cal-day">17</div>
+            <div class="cal-day booked-alt">18<div class="cal-dot"></div></div>
+            <div class="cal-day booked">19<div class="cal-dot"></div></div>
+            <div class="cal-day">20</div>
+            <div class="cal-day">21</div>
+            <div class="cal-day booked">22<div class="cal-dot"></div></div>
+            <div class="cal-day">23</div>
+            <div class="cal-day booked-alt">24<div class="cal-dot"></div></div>
+            <div class="cal-day">25</div>
+            <div class="cal-day booked">26<div class="cal-dot"></div></div>
+            <div class="cal-day">27</div>
+            <div class="cal-day">28</div>
+            <div class="cal-day">29</div>
+            <div class="cal-day booked">30<div class="cal-dot"></div></div>
+            <div class="cal-day">31</div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+          </div>
+        </div>
+        <div class="dash-stats">
+          <div class="dash-stat">
+            <div class="ds-val">24</div>
+            <div class="ds-label">Shoots</div>
+          </div>
+          <div class="dash-stat">
+            <div class="ds-val">$8,640</div>
+            <div class="ds-label">Revenue</div>
+          </div>
+          <div class="dash-stat">
+            <div class="ds-val">11</div>
+            <div class="ds-label">Clients</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Image Break: photographer shooting a property -->
-<div class="img-break">
-  <div class="img-break-overlay"></div>
+<!-- ── Photo Break ── -->
+<div class="photo-break">
+  <div class="photo-break-overlay"></div>
   <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80&auto=format"
-       alt="Modern home interior showcasing the quality real estate photographers deliver"
-       loading="lazy" />
+       alt="Modern home interior — the quality real estate photographers deliver" loading="lazy">
 </div>
 
-<!-- Stats -->
-<div class="stats">
-  <div class="stats-inner">
-    <div class="stat-item">
-      <div class="num">15k+</div>
-      <p>Real estate photographers in the US</p>
-    </div>
-    <div class="stat-item">
-      <div class="num">$240M</div>
-      <p>Annual spend on RE photography software</p>
-    </div>
-    <div class="stat-item">
-      <div class="num">73%</div>
-      <p>Unhappy with their current CRM</p>
-    </div>
-    <div class="stat-item">
-      <div class="num">1 tool</div>
-      <p>To replace 3–5 disconnected apps</p>
+<!-- ── Stats ── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid stagger">
+      <div class="stat-item reveal">
+        <div class="stat-num">15k+</div>
+        <div class="stat-desc">RE photographers in the US</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">$240M</div>
+        <div class="stat-desc">Annual spend on RE photo software</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">73%</div>
+        <div class="stat-desc">Unhappy with their current CRM</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">1 tool</div>
+        <div class="stat-desc">To replace 3–5 disconnected apps</div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- Social Proof -->
-<section class="social-proof">
-  <h2>Early voices from the waitlist</h2>
-  <div class="testimonials">
-    <div class="testimonial">
-      <p>I've been using Aryeo for two years. The second I heard Zillow bought them, I started looking for alternatives. Can't wait for this.</p>
-      <div class="author">
-        <img class="avatar-photo"
-             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80&auto=format&fit=crop"
-             alt="Sarah M." loading="lazy" />
-        <div class="author-info">
-          <strong>Sarah M.</strong>
-          <span>RE Photographer · Dallas, TX</span>
+<!-- ── Testimonials ── -->
+<section class="testimonials">
+  <div class="container">
+    <div class="testimonials-header">
+      <p class="section-label reveal">Social Proof</p>
+      <h2 class="section-title reveal">Early voices from<br><em style="font-family:var(--font-display);font-style:italic;color:var(--accent);">the waitlist</em></h2>
+    </div>
+    <div class="testimonial-grid stagger">
+      <div class="testimonial-card reveal">
+        <p>I've been using Aryeo for two years. The second I heard Zillow bought them, I started looking for alternatives. Can't wait for this.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar"
+               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80&auto=format&fit=crop"
+               alt="Sarah M." loading="lazy">
+          <div class="testimonial-info">
+            <strong>Sarah M.</strong>
+            <span>RE Photographer · Dallas, TX</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="testimonial">
-      <p>HDPH feels like it was designed in 2014. The UI is painful. If PhotoPro actually solves scheduling + delivery in one place, I'm in.</p>
-      <div class="author">
-        <img class="avatar-photo"
-             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80&auto=format&fit=crop"
-             alt="James K." loading="lazy" />
-        <div class="author-info">
-          <strong>James K.</strong>
-          <span>RE Photographer · Atlanta, GA</span>
+      <div class="testimonial-card reveal">
+        <p>HDPH feels like it was designed in 2014. The UI is painful. If PhotoPro actually solves scheduling + delivery in one place, I'm in.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar"
+               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80&auto=format&fit=crop"
+               alt="James K." loading="lazy">
+          <div class="testimonial-info">
+            <strong>James K.</strong>
+            <span>RE Photographer · Atlanta, GA</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="testimonial">
-      <p>The invoicing alone would save me 3 hours a week. I've been doing it manually in Google Sheets like an animal.</p>
-      <div class="author">
-        <img class="avatar-photo"
-             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80&auto=format&fit=crop"
-             alt="Maria L." loading="lazy" />
-        <div class="author-info">
-          <strong>Maria L.</strong>
-          <span>RE Photographer · Miami, FL</span>
+      <div class="testimonial-card reveal">
+        <p>The invoicing alone would save me 3 hours a week. I've been doing it manually in Google Sheets like an animal.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar"
+               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80&auto=format&fit=crop"
+               alt="Maria L." loading="lazy">
+          <div class="testimonial-info">
+            <strong>Maria L.</strong>
+            <span>RE Photographer · Miami, FL</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Gallery Strip: property photos your clients deliver -->
-<div class="gallery-strip">
-  <p class="gallery-strip-label">The kind of work your clients deliver</p>
+<!-- ── Gallery Strip ── -->
+<div class="gallery">
+  <p class="gallery-label">The work your clients deliver</p>
   <div class="gallery-scroll">
     <div class="gallery-thumb">
       <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&q=80&auto=format"
-           alt="Luxury residential property photo" loading="lazy" />
+           alt="Luxury residential property" loading="lazy">
     </div>
     <div class="gallery-thumb">
       <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=300&q=80&auto=format"
-           alt="Modern home exterior photography" loading="lazy" />
+           alt="Modern home exterior" loading="lazy">
     </div>
     <div class="gallery-thumb">
       <img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=300&q=80&auto=format"
-           alt="Beautiful real estate interior shot" loading="lazy" />
+           alt="Beautiful interior shot" loading="lazy">
     </div>
     <div class="gallery-thumb">
       <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=300&q=80&auto=format"
-           alt="Professional real estate photography" loading="lazy" />
+           alt="Professional real estate photography" loading="lazy">
+    </div>
+    <div class="gallery-thumb">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=300&q=80&auto=format"
+           alt="Residential exterior" loading="lazy">
     </div>
   </div>
 </div>
 
-<!-- Final CTA -->
-<section class="cta-section">
-  <h2>Be first in line.</h2>
-  <p>We're building this for photographers, with photographers. Early access members get lifetime discount pricing and a direct line to the roadmap.</p>
-  <div class="form-wrap">
+<!-- ── Final CTA ── -->
+<section class="final-cta">
+  <h2 class="section-title reveal">Be first in line.</h2>
+  <p class="section-sub reveal">We're building this for photographers, with photographers. Early access members get lifetime discount pricing and a direct line to the roadmap.</p>
+  <div class="form-card reveal">
+    <h3>Join the waitlist →</h3>
     <form action="https://formsubmit.co/oopslabai@gmail.com" method="POST">
       <input type="hidden" name="_subject" value="PhotoPro CRM Waitlist Signup">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://oops-lab-ai.github.io/photopro/thanks.html">
       <div class="form-row">
-        <input type="email" name="email" placeholder="your@email.com" required />
+        <input type="email" name="email" placeholder="your@email.com" required>
         <button type="submit" class="btn-primary">Join Waitlist</button>
       </div>
     </form>
-    <p class="form-note"><i data-lucide="lock" style="width:12px;height:12px;"></i> No spam. No Zillow. Just early access and honest updates.</p>
+    <p class="form-note">
+      <i data-lucide="shield-check" style="width:13px;height:13px;"></i>
+      No spam. No Zillow. Just early access &amp; honest updates.
+    </p>
   </div>
 </section>
 
+<!-- ── Footer ── -->
 <footer>
-  <p>© 2026 PhotoPro CRM by OopsLab AI · <a href="mailto:oopslabai@gmail.com" style="color:var(--muted)">oopslabai@gmail.com</a></p>
+  <p>© 2026 PhotoPro CRM by OopsLab AI · <a href="mailto:oopslabai@gmail.com">oopslabai@gmail.com</a></p>
 </footer>
 
-<script>lucide.createIcons();</script>
+<!-- ── Scripts ── -->
+<script>
+  lucide.createIcons();
+
+  // Scroll-triggered reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
